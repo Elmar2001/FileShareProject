@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import *
 from .forms import FileForm
@@ -63,13 +64,16 @@ def files_view(request):
 
     files = File.objects.filter(uploader=request.user)
     shared_f = Shared.objects.filter(shared_with=request.user)
-    print(shared_f)
-    print(shared_f.fi)
+    l = []
+    for s in shared_f:
+        l.append(File.objects.get(pk=s.shared_file.pk))
+
     # for f in shared_files:
     #     print(f.file_name)
 
     return render(request, "share/files.html", {
         'files': files,
+       'shared_with_me': l
     })
 
 def share(request, filename):
@@ -81,7 +85,7 @@ def share(request, filename):
         newShare.save()
     return HttpResponseRedirect(reverse('files'))
 
-
+@login_required
 def upload(request):
     newFile = File()
     if request.method == 'POST':
@@ -103,7 +107,7 @@ def upload(request):
                 # Redirect to the file list after POST
                 return HttpResponseRedirect(reverse('files'))
     else:
-        form = FileForm()  # An empty, unbound form
+        form = FileForm()
 
     return render(request, 'share/upload.html',
         {'file': newFile,

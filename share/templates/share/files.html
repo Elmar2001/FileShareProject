@@ -6,19 +6,26 @@
 
 </head>
 <body>
+<a href="{% url 'upload' %}">Upload a file</a>
 {% if files %}
     <h2>My uploaded files:</h2>
     {% for file in files %}
         <form action="{% url 'index'%}share/{{ file.file_name }}/" method="post">
         {% csrf_token %}
         <a href="{{ file.file.url }}">{{file.file_name}}</a>
-        <input type="text" placeholder="Username" name="username" required>
+        <input style="width:70px;" type="text" placeholder="Username" name="username" required>
         <input type="submit" value="Share">
         </form>
         <br>
     {% endfor %}
-{% else %}
-    No files yet
+
+{% endif %}
+
+{% if shared_with_me %}
+<h2>Shared with me:</h2>
+    {% for file in shared_with_me %}
+        <a href="{{ file.file.url }}">{{file.file_name}}</a><br>
+    {% endfor %}
 {% endif %}
 
 
