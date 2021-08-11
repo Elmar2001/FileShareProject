@@ -59,13 +59,27 @@ def index(request):
         return render(request, "share/login.html")
 
 
-
 def files_view(request):
-    files = File.objects.filter(uploader=request.user)
 
-    return render(request, "share/files.html",{
+    files = File.objects.filter(uploader=request.user)
+    shared_f = Shared.objects.filter(shared_with=request.user)
+    print(shared_f)
+    print(shared_f.fi)
+    # for f in shared_files:
+    #     print(f.file_name)
+
+    return render(request, "share/files.html", {
         'files': files,
     })
+
+def share(request, filename):
+    if request.method == "POST":
+        shared_file = File.objects.get(file_name=filename)
+
+        user = User.objects.get(username=request.POST["username"])
+        newShare = Shared(shared_by=request.user, shared_with=user, shared_file=shared_file)
+        newShare.save()
+    return HttpResponseRedirect(reverse('files'))
 
 
 def upload(request):
@@ -74,14 +88,22 @@ def upload(request):
             form = FileForm(request.POST, request.FILES)
 
             if form.is_valid():
+
                 newFile = File(file=request.FILES['file'], uploader=request.user,
-                               file_name=request.FILES['file'].name, description=request.POST['description'])
+                               file_name=request.FILES['file'].name.replace(' ', '_'),
+                               description=request.POST['description'])
+
+                print(f"here you go fam {newFile.file.name}")
                 newFile.save()
+
+                # newFile.file_name = newFile.file.name  # to solve duplicates
+                # newFile.save()
+                print(f"here you go fam {newFile.file.name}")
                 print(newFile.file_name)
                 # Redirect to the file list after POST
                 return HttpResponseRedirect(reverse('files'))
     else:
-        form = FileForm()  # A empty, unbound form
+        form = FileForm()  # An empty, unbound form
 
     return render(request, 'share/upload.html',
         {'file': newFile,
@@ -92,9 +114,7 @@ def upload(request):
 
 def download(request, filename):
     getFile = File.objects.get(file_name=filename)
-    print(getFile.file_name)
-    print('insdie downlaod')
 
     if getFile is not None:
-        return FileResponse(open('Files/filename', 'rb'))
+        return FileResponse(open(getFile.file.name, 'rb'))
     return HttpResponseRedirect("someerrorpage.html") # create error page
