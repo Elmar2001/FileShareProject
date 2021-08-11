@@ -1,0 +1,23 @@
+{% load static %}
+
+<link href="{% static 'share/styles.css' %}" rel="stylesheet">
+
+<input type='checkbox' id='form-switch'>
+
+<form id='login-form' action="{% url 'index' %}" method='post'>
+    {% csrf_token %}
+  <input type="text" placeholder="Username" name="username" required>
+  <input type="password" placeholder="Password" name="password" required>
+  <button type='submit' name='submit' value='login'>Login</button>
+  <label for='form-switch'><span>Register</span></label>
+</form>
+
+<form id='register-form' action="{% url 'index' %}" method='post'>
+    {% csrf_token %}
+  <input type="text" placeholder="Username" name="username" required>
+  <input type="email" placeholder="Email" name="email" required>
+  <input type="password" placeholder="Password" name="password1" required>
+  <input type="password" placeholder="Re Password" name="password2" required>
+  <button type='submit' name='submit' value='register'>Register</button>
+  <label for='form-switch'>Sign in instead</label>
+</form>
