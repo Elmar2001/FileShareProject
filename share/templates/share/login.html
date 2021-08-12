@@ -4,7 +4,7 @@
 
 <input type='checkbox' id='form-switch'>
 
-<form id='login-form' action="{% url 'index' %}" method='post'>
+<form id='login-form' action="{% url 'login' %}" method='post'>
     {% csrf_token %}
   <input type="text" placeholder="Username" name="username" required>
   <input type="password" placeholder="Password" name="password" required>
@@ -12,7 +12,7 @@
   <label for='form-switch'><span>Register</span></label>
 </form>
 
-<form id='register-form' action="{% url 'index' %}" method='post'>
+<form id='register-form' action="{% url 'login' %}" method='post'>
     {% csrf_token %}
   <input type="text" placeholder="Username" name="username" required>
   <input type="email" placeholder="Email" name="email" required>

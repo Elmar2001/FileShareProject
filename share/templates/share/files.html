@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <meta charset="UTF-8">
     <title>My Files</title>
 
 </head>
 <body>
 <a href="{% url 'upload' %}">Upload a file</a>
+<a href="{% url 'logout' %}">Log out</a>
+
+
 {% if files %}
     <h2>My uploaded files:</h2>
     {% for file in files %}
-        <form action="{% url 'index'%}share/{{ file.file_name }}/" method="post">
-        {% csrf_token %}
-        <a href="{{ file.file.url }}">{{file.file_name}}</a>
-        <input style="width:70px;" type="text" placeholder="Username" name="username" required>
-        <input type="submit" value="Share">
-        </form>
+        <a href="{%  url 'view' file.file_name %}">{{file.file_name}}</a>
+
         <br>
     {% endfor %}
 
 {% endif %}
 
 {% if shared_with_me %}
-<h2>Shared with me:</h2>
-    {% for file in shared_with_me %}
-        <a href="{{ file.file.url }}">{{file.file_name}}</a><br>
+<h4>Shared with me:</h4>
+    {% for file, comment in shared_with_me.items %}
+        <a href="{%  url 'view' file.file_name %}">{{file.file_name}}</a>
+
+
+
+        <br>
     {% endfor %}
 {% endif %}
 

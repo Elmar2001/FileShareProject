@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View file</title>
+</head>
+<body>
+
+<a href="{{ file.file.url }}">Click here to download <b>{{file.file_name}}</b></a>
+<br>
+<b>File description:</b> {{ file.description }}
+<br>
+
+<form action="{% url 'share' file.file_name %}" method="post">
+{% csrf_token %}
+    Share with:
+    <input style="width:100px;" type="text" placeholder="Username" name="username" required>
+    <input type="checkbox" name="canComment">Allow commments
+    <input type="submit" value="Share">
+</form>
+
+{% if comments %}
+<h4> Comments: </h4>
+{% for comment in comments %}
+    <b>{{ comment.user.username }}:</b> {{ comment.comment }} <br>
+{% endfor %}
+{% endif %}
+{% if comment_allowed %}
+
+            <form action="{% url 'comment' file.pk %}" method="post">
+            {% csrf_token %}
+            <input style="width:150px;" type="text" placeholder="Comment" name="comment" required>
+            <input type="submit" value="Post">
+            </form>
+
+{% endif %}
+</body>
+</html>
