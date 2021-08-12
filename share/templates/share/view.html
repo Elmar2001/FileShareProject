@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>View file</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 <body>
-
+<a href="{% url 'files' %}">My Files</a><br><br>
 <a href="{{ file.file.url }}">Click here to download <b>{{file.file_name}}</b></a>
 <br>
 <b>File description:</b> {{ file.description }}
@@ -13,12 +15,12 @@
 
 <form action="{% url 'share' file.file_name %}" method="post">
 {% csrf_token %}
-    Share with:
+    <b>Share with:</b>
     <input style="width:100px;" type="text" placeholder="Username" name="username" required>
     <input type="checkbox" name="canComment">Allow commments
     <input type="submit" value="Share">
 </form>
-
+<hr>
 {% if comments %}
 <h4> Comments: </h4>
 {% for comment in comments %}

@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        a {
+            padding:10px 40px 10px 3px;
+        }
+    </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <meta charset="UTF-8">
@@ -13,7 +18,7 @@
 
 
 {% if files %}
-    <h2>My uploaded files:</h2>
+    <h4>My uploaded files:</h4>
     {% for file in files %}
         <a href="{%  url 'view' file.file_name %}">{{file.file_name}}</a>
 
@@ -24,11 +29,8 @@
 
 {% if shared_with_me %}
 <h4>Shared with me:</h4>
-    {% for file, comment in shared_with_me.items %}
+    {% for file in shared_with_me %}
         <a href="{%  url 'view' file.file_name %}">{{file.file_name}}</a>
-
-
-
         <br>
     {% endfor %}
 {% endif %}
