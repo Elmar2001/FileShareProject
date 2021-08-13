@@ -3,7 +3,7 @@ import os
 from celery import Celery, shared_task
 from celery.schedules import crontab
 
-from share.models import File
+
 from datetime import datetime
 from datetime import timedelta
 
@@ -26,20 +26,20 @@ app.autodiscover_tasks()
 def debug_task(self):
     print(f'Request: {self.request!r}')
 
-
-# @shared_task(name="check_db")
-# def print_message(message, *args, **kwargs):
-#     files = File.objects.all()
-#
-#     for f in files:
-#         if f.upload_date > datetime.now() + timedelta(days=7):
-#             File.objects.filter(f).delete()
-
+print("CELERY.PY")
 
 app.conf.beat_schedule = {
     # Execute the Speed Test every 10 minutes
     'check-db-every-5min': {
-        'task': 'check_db',
-        'schedule': crontab(minute='*/5'),
+        'task': 'share.tasks.check_db',
+        'schedule': 5,
     },
 }
+# crontab(minute='*/2')
+# app.conf.beat_schedule = {
+#     'add-every-30-seconds': {
+#         'task': 'tasks.checkdb',
+#         'schedule': 30.0,
+#     },
+# }
+app.conf.timezone = 'UTC'
