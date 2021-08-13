@@ -143,10 +143,6 @@ def upload(request):
 
 
 def download(request, filename):
-    files = File.objects.all()
-    # for f in files:
-    #     print(f)
-    # print(filename)
     try:
         get_file = File.objects.get(file_name=filename)
     except File.DoesNotExist:
@@ -159,9 +155,9 @@ def download(request, filename):
 
 def comment(request, pk):
     if request.method == 'POST':
-        grab_file = File.objects.get(pk=pk)
-        new_comment = Comment(user=request.user, file=grab_file, comment=request.POST['comment'])
+        get_file = File.objects.get(pk=pk)
+        new_comment = Comment(user=request.user, file=get_file, comment=request.POST['comment'])
         new_comment.save()
 
-    return HttpResponseRedirect(reverse('view', kwargs={'filename': grab_file.file_name}))
+    return HttpResponseRedirect(reverse('view', kwargs={'filename': get_file.file_name}))
 

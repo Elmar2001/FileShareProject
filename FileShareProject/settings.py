@@ -76,10 +76,21 @@ WSGI_APPLICATION = 'FileShareProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+DATABASES = { # elephantsql db
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'vmeembbm',
+        'USER': 'vmeembbm',
+        'PASSWORD': 'y-TSfkIhhKEf0WBniK6Ufby235wXrRvO',
+        'HOST': 'chunee.db.elephantsql.com',
+        'PORT': '5432',
     }
 }
 

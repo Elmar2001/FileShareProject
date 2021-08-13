@@ -1,6 +1,6 @@
 import os
 
-from celery import Celery, shared_task
+from celery import Celery
 from celery.schedules import crontab
 
 
@@ -22,24 +22,12 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 
-@app.task(bind=True)
-def debug_task(self):
-    print(f'Request: {self.request!r}')
-
-print("CELERY.PY")
-
 app.conf.beat_schedule = {
-    # Execute the Speed Test every 10 minutes
+    # Check files in db every 5 minutes
     'check-db-every-5min': {
         'task': 'share.tasks.check_db',
-        'schedule': 5,
+        'schedule': crontab(minute='*/5'),
     },
 }
-# crontab(minute='*/2')
-# app.conf.beat_schedule = {
-#     'add-every-30-seconds': {
-#         'task': 'tasks.checkdb',
-#         'schedule': 30.0,
-#     },
-# }
+
 app.conf.timezone = 'UTC'
