@@ -11,7 +11,7 @@ from .forms import FileForm
 import os
 
 
-def login_redirect(request): # if the user is logged in, redirect to files
+def login_redirect(request):  # if the user is logged in, redirect to files
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('files'))
     return HttpResponseRedirect(reverse('login'))
@@ -142,6 +142,7 @@ def upload(request):
          })
 
 
+@login_required
 def download(request, filename):
     try:
         get_file = File.objects.get(file_name=filename)

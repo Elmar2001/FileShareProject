@@ -12,11 +12,11 @@ def check_db():
 
     for f in files:
         uploaded = f.upload_date.replace(tzinfo=utc)
-        days7 = uploaded + timedelta(minutes=2)
+        days7 = uploaded + timedelta(days=7)  # add 7 days to the uploaded date
         days7 = days7.replace(tzinfo=utc)
 
         now = datetime.now()
         now = now.replace(tzinfo=utc)
 
-        if now > days7:
+        if now > days7:  # if it's past 7 days delete the file
             File.objects.filter(pk=f.pk).delete()

@@ -3,10 +3,6 @@ import os
 from celery import Celery
 from celery.schedules import crontab
 
-
-from datetime import datetime
-from datetime import timedelta
-
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FileShareProject.settings')
 
